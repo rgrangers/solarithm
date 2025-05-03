@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Panel Surya dan Baterai</title>
+</head>
+<body>
+    <h1>Kalkulator Kebutuhan Panel Surya dan Baterai</h1>
+
+    <form id="solarForm">
+        <label for="tagihanListrik">Tagihan Listrik Bulanan (Rp):</label>
+        <input type="number" id="tagihanListrik" required><br><br>
+
+        <label for="dayaPanel">Daya Panel Surya (Wp):</label>
+        <input type="number" id="dayaPanel" required><br><br>
+
+        <label for="hargaPanel">Harga per Panel Surya (Rp):</label>
+        <input type="number" id="hargaPanel" required><br><br>
+
+        <label for="kapasitasBaterai">Kapasitas Baterai yang Diinginkan (kWh):</label>
+        <input type="number" id="kapasitasBaterai" required><br><br>
+
+        <button type="button" onclick="hitungKebutuhan()">Hitung Kebutuhan Panel Surya dan Baterai</button>
+    </form>
+
+    <div id="hasilPerhitungan"></div>
+
+    <script>
+        function hitungKebutuhan() {
+            const tagihanListrik = parseFloat(document.getElementById('tagihanListrik').value);
+            const dayaPanel = parseFloat(document.getElementById('dayaPanel').value);
+            const hargaPanel = parseFloat(document.getElementById('hargaPanel').value);
+            const kapasitasBaterai = parseFloat(document.getElementById('kapasitasBaterai').value);
+
+            // Menentukan harga inverter dan SCC per kWp
+            const hargaInverterPerKwp = 2500000;  // Biaya inverter per kWp
+            const hargaSCCPerKwp = 900000;        // Biaya Solar Charge Controller per kWp
+
+            // Asumsi biaya listrik per kWh di Indonesia sekitar 1444,7
+            const biayaPerKWh = 1444.7;
+
+            // Hitung kebutuhan daya per bulan
+            const kebutuhanListrikPerBulan = tagihanListrik / biayaPerKWh;
+
+            // Hitung kebutuhan area panel surya per bulan
+            const kebutuhanListrikPerHari = kebutuhanListrikPerBulan / 120; // Menyesuaikan dengan perhitungan per hari
+            const totalKebutuhanDaya = kebutuhanListrikPerHari;
+
+            // Menghitung jumlah panel surya yang dibutuhkan dalam kWp
+            const kebutuhanPanelKwp = totalKebutuhanDaya; // convert Wp to kWp
+            const jumlahPanel = Math.ceil(kebutuhanPanelKwp / (dayaPanel / 1000));  // daya panel dalam kWp
+            const biayaPanelTotal = jumlahPanel * hargaPanel;
+
+            // Hitung kebutuhan kapasitas baterai dengan asumsi autonomy 2 hari
+            const kapasitasBateraiTotal = kapasitasBaterai * 2;  // Autonomy 2 hari
+            const biayaBateraiTotal = kapasitasBateraiTotal * 1500000;  // Biaya baterai per kWh
+
+            // Hitung biaya inverter dan SCC berdasarkan kWp
+            const biayaInverter = kebutuhanPanelKwp * hargaInverterPerKwp;
+            const biayaSCC = kebutuhanPanelKwp * hargaSCCPerKwp;
+
+            // Hitung biaya total sistem (panel + baterai + inverter + SCC)
+            const biayaSistemTotal = biayaPanelTotal + biayaBateraiTotal + biayaInverter + biayaSCC;
+
+            // Menghitung estimasi penghematan tagihan listrik per bulan
+            const energiHarianPanel = totalKebutuhanDaya * 0.85; // Misal setiap panel menghasilkan 0.85 kWh per panel per hari
+            const penghematanBulanan = energiHarianPanel * 30 * biayaPerKWh;
+
+            // Menghitung estimasi waktu balik modal (payback period)
+            const paybackPeriod = biayaSistemTotal / penghematanBulanan;
+
+            // Menghitung estimasi pengurangan emisi CO2
+            const emisiHematTahunan = energiHarianPanel * 365 * 0.85;
+
+            // Menghitung ROI per bulan
+            const roiPerBulan = biayaSistemTotal / penghematanBulanan;
+
+            // Menghitung ROI per tahun
+            const roiPerTahun = roiPerBulan / 12;
+
+            // Menampilkan hasil perhitungan
+            const hasilDiv = document.getElementById('hasilPerhitungan');
+            hasilDiv.innerHTML = `
+                <h2>Hasil Perhitungan:</h2>
+                <p>Kebutuhan listrik per bulan: Rp ${tagihanListrik.toLocaleString()}</p>
+                <p>Kebutuhan panel surya yang dibutuhkan: ${jumlahPanel} panel.</p>
+                <p>Total biaya untuk membeli panel surya: Rp ${biayaPanelTotal.toLocaleString()}</p>
+                <p>Kapasitas baterai yang dibutuhkan: ${kapasitasBateraiTotal} kWh.</p>
+                <p>Total biaya untuk membeli baterai: Rp ${biayaBateraiTotal.toLocaleString()}</p>
+                <p>Harga Inverter (per kWp): Rp ${biayaInverter.toLocaleString()}</p>
+                <p>Harga Solar Charge Controller (SCC) (per kWp): Rp ${biayaSCC.toLocaleString()}</p>
+                <p>Total biaya untuk sistem panel surya + baterai + inverter + SCC: Rp ${biayaSistemTotal.toLocaleString()}</p>
+                <h3>Estimasi Penghematan:</h3>
+                <p>Penghematan tagihan listrik per bulan: Rp ${penghematanBulanan.toLocaleString()}</p>
+                <h3>Estimasi Waktu Balik Modal (Payback Period):</h3>
+                <p>Balik modal dalam waktu sekitar ${paybackPeriod.toFixed(2)} tahun.</p>
+                <h3>Estimasi Pengurangan Emisi CO₂:</h3>
+                <p>Mengurangi emisi karbon sebesar ${emisiHematTahunan.toFixed(2)} kg CO₂ per tahun.</p>
+                <h3>Estimasi ROI:</h3>
+                <p>ROI per bulan: Rp ${roiPerBulan.toLocaleString()}</p>
+                <p>ROI per tahun: Rp ${roiPerTahun.toLocaleString()}</p>
+            `;
+        }
+    </script>
+
+</body>
+</html>
