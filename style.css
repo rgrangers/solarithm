@@ -1,0 +1,125 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Panel Surya dan Baterai</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+            background: linear-gradient(135deg, #004aad, #ffe959); /* Diagonal gradient using the primary and secondary colors */
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 40px;
+            color: #ffffff;
+            font-size: 36px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3); /* Subtle text shadow for better readability */
+        }
+
+        form {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            backdrop-filter: blur(10px); /* Apply a blur effect to the background */
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: block;
+            font-size: 16px;
+            color: #004aad;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #004aad;
+            border-radius: 8px;
+            font-size: 18px;
+            color: #333;
+            background-color: #f8f8f8;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: #ffe959;
+            outline: none;
+        }
+
+        button {
+            background-color: #004aad;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #003a8c;
+        }
+
+        #hasilPerhitungan {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+        }
+
+        h2, h3 {
+            color: #004aad;
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .result-item {
+            margin-bottom: 10px;
+        }
+
+        .result-item p {
+            margin: 0;
+            color: #004aad;
+            font-weight: bold;
+        }
+
+        .highlight {
+            color: #ffe959;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            form, #hasilPerhitungan {
+                width: 90%;
+                padding: 15px;
+            }
+            h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
